@@ -92,7 +92,7 @@ export function PdfFusionClient() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative w-full max-w-3xl mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden"
+      className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden"
     >
       <div className="p-4 md:p-6 space-y-4">
         <FileDropzone onDrop={handleDrop} />
