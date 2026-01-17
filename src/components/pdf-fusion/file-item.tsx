@@ -7,6 +7,7 @@ import { GripVertical, Trash2, FileType2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import { FileItemType } from "./pdf-fusion-client";
+import { cn } from "@/lib/utils";
 
 type FileItemProps = {
   fileItem: FileItemType;
@@ -44,30 +45,31 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       animate="visible"
       exit="exit"
       layout
-      className={`flex items-center gap-4 bg-white/50 dark:bg-slate-800/30 p-2.5 rounded-lg shadow-sm ${
-        isDragging ? "shadow-lg" : ""
-      }`}
+      className={cn(
+        "flex items-center gap-4 bg-muted/30 p-3 rounded-lg border",
+        isDragging ? "shadow-md bg-accent" : "hover:bg-muted"
+      )}
     >
-      <button {...attributes} {...listeners} className="cursor-grab touch-none p-1.5 text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white">
-        <GripVertical size={20} />
+      <button {...attributes} {...listeners} className="cursor-grab touch-none p-1 text-muted-foreground hover:text-foreground">
+        <GripVertical size={18} />
       </button>
       <FileType2 className="h-6 w-6 text-primary flex-shrink-0" />
       <div className="flex-1 truncate">
-        <p className="truncate text-sm font-medium text-gray-800 dark:text-gray-100">
+        <p className="truncate text-sm font-medium text-foreground">
           {fileItem.file.name}
         </p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-muted-foreground">
           {formatBytes(fileItem.file.size)}
         </p>
       </div>
       <Button
         variant="ghost"
         size="icon"
-        className="text-destructive/70 hover:text-destructive hover:bg-destructive/10 h-8 w-8"
+        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 rounded-full"
         onClick={() => onDelete(fileItem.id)}
         aria-label="Delete file"
       >
-        <Trash2 size={18} />
+        <Trash2 size={16} />
       </Button>
     </motion.li>
   );

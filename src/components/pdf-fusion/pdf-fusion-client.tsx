@@ -5,11 +5,12 @@ import { PDFDocument } from "pdf-lib";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileDropzone } from "./file-dropzone";
 import { FileQueue } from "./file-queue";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Download, Loader2, CheckCircle, AlertCircle } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 export type FileItemType = {
   id: string;
@@ -83,7 +84,7 @@ export function PdfFusionClient() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative w-full max-w-3xl mx-auto bg-white/50 dark:bg-slate-900/50 backdrop-blur-2xl border border-white/20 dark:border-slate-800/50 rounded-2xl shadow-xl overflow-hidden"
+      className="relative w-full max-w-3xl mx-auto rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden"
     >
       <div className="p-6 md:p-8 space-y-6">
         <FileDropzone onDrop={handleDrop} />
@@ -95,7 +96,7 @@ export function PdfFusionClient() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
             >
-              <h2 className="text-lg font-semibold text-gray-700 dark:text-gray-200 mb-3">File Queue</h2>
+              <h2 className="text-lg font-semibold text-foreground mb-3">File Queue</h2>
               <ScrollArea className="h-full max-h-[260px] w-full pr-3">
                 {MemoizedFileQueue}
               </ScrollArea>
@@ -120,7 +121,7 @@ export function PdfFusionClient() {
               )}
               {isMerging && (
                   <div className="w-full space-y-2">
-                    <p className="text-sm text-center text-primary">Merging... {Math.round(progress)}%</p>
+                    <p className="text-sm text-center text-primary-foreground/80">Merging... {Math.round(progress)}%</p>
                     <Progress value={progress} className="w-full h-2" />
                   </div>
               )}
@@ -130,8 +131,8 @@ export function PdfFusionClient() {
 
       {(files.length > 0) && (
         <>
-          <Separator className="bg-white/30 dark:bg-slate-700/50"/>
-          <div className="p-6 md:p-8 bg-black/5 dark:bg-black/10 flex justify-end">
+          <Separator />
+          <div className="p-6 bg-muted/50 flex justify-end">
             <AnimatePresence mode="wait">
               {mergedPdfUrl ? (
                 <motion.a
@@ -141,10 +142,10 @@ export function PdfFusionClient() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.8 }}
-                  className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-11 px-8 bg-emerald-500 text-white hover:bg-emerald-500/90"
+                  className={cn(buttonVariants({ size: 'lg', variant: 'success' }), "gap-2")}
                 >
                   <CheckCircle size={20} />
-                  Download PDF
+                  <span>Download PDF</span>
                 </motion.a>
               ) : (
                 <motion.div
@@ -157,7 +158,6 @@ export function PdfFusionClient() {
                     size="lg"
                     onClick={handleMerge}
                     disabled={isMerging}
-                    className="bg-gradient-to-r from-primary via-violet-600 to-purple-600 text-white shadow-lg hover:shadow-xl transition-shadow duration-300"
                   >
                     {isMerging ? (
                       <Loader2 className="animate-spin" size={20} />

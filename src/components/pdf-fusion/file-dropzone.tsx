@@ -20,25 +20,24 @@ export function FileDropzone({ onDrop }: FileDropzoneProps) {
     <div
       {...getRootProps()}
       className={cn(
-        "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50/50 p-8 text-center transition-all duration-300 ease-in-out hover:border-primary/80 hover:bg-gray-100/50 dark:border-gray-700 dark:bg-gray-800/20 dark:hover:border-primary/60 dark:hover:bg-gray-800/40",
-        isDragActive &&
-          "border-primary ring-4 ring-primary/20 bg-primary/5 dark:bg-primary/10"
+        "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-transparent p-12 text-center transition-colors duration-300 hover:border-primary/60 hover:bg-accent",
+        isDragActive && "border-primary bg-accent"
       )}
     >
       <input {...getInputProps()} />
-      <div className="flex flex-col items-center gap-2 text-gray-500 dark:text-gray-400">
+      <div className="flex flex-col items-center gap-3 text-muted-foreground">
         <UploadCloud
           className={cn(
-            "h-12 w-12 transition-transform duration-300",
-            isDragActive && "scale-125 text-primary"
+            "h-10 w-10 transition-transform duration-300",
+            isDragActive && "scale-110 text-primary"
           )}
         />
-        <p className="text-lg font-semibold">
+        <p className="text-lg font-medium text-foreground">
           {isDragActive
             ? "Drop the files here!"
             : "Drag & drop PDFs here, or click to select"}
         </p>
-        <p className="text-sm text-gray-400">
+        <p className="text-sm">
           All processing is done in your browser.
         </p>
       </div>
