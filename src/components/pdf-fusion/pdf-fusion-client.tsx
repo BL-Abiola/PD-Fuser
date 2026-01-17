@@ -94,7 +94,7 @@ export function PdfFusionClient() {
       transition={{ duration: 0.5 }}
       className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden"
     >
-      <div className="p-4 md:p-6 space-y-4">
+      <div className="p-4 space-y-4">
         <FileDropzone onDrop={handleDrop} />
       </div>
       
@@ -106,7 +106,7 @@ export function PdfFusionClient() {
             exit={{ opacity: 0, height: 0 }}
             className="space-y-3"
           >
-            <h2 className="text-lg font-semibold text-foreground px-4 md:px-6">File Queue</h2>
+            <h2 className="text-lg font-semibold text-foreground px-4">File Queue</h2>
             <ScrollArea className="w-full max-h-[40vh] border-y">
               <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} />
             </ScrollArea>
@@ -120,7 +120,7 @@ export function PdfFusionClient() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="px-4 md:px-6 pb-4"
+              className="px-4 pb-4"
             >
               <div className="w-full space-y-2 pt-4">
                 <p className="text-sm text-center text-muted-foreground">Merging... {Math.round(progress)}%</p>
