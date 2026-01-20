@@ -67,7 +67,7 @@ export function PdfFusionClient() {
         setProgress(((i + 1) / files.length) * 100);
       }
 
-      const mergedPdfBytes = await mergedPdf.save();
+      const mergedPdfBytes = await mergedPdf.save({ useObjectStreams: true });
       const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
       setMergedPdfUrl(url);
@@ -106,7 +106,7 @@ export function PdfFusionClient() {
             exit={{ opacity: 0, height: 0 }}
             className="space-y-3"
           >
-            <h2 className="text-lg font-semibold text-foreground px-4">File Queue</h2>
+            <h2 className="text-lg font-semibold text-foreground px-4 md:px-6">File Queue</h2>
             <ScrollArea className="w-full max-h-[40vh] border-y">
               <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} />
             </ScrollArea>
