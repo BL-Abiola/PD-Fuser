@@ -46,15 +46,17 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       exit="exit"
       layout
       className={cn(
-        "flex items-center gap-4 bg-card px-4 py-3 border-b last:border-b-0",
-        isDragging ? "shadow-lg bg-accent" : "hover:bg-muted/50"
+        "flex items-center gap-4 bg-card p-3 border rounded-lg shadow-sm transition-shadow",
+        isDragging ? "shadow-lg bg-accent ring-2 ring-primary" : "hover:shadow-md"
       )}
     >
-      <button {...attributes} {...listeners} className="cursor-grab touch-none p-1 text-muted-foreground hover:text-foreground">
-        <GripVertical size={18} />
+      <button {...attributes} {...listeners} className="cursor-grab touch-none p-2 text-muted-foreground hover:text-foreground">
+        <GripVertical size={20} />
       </button>
-      <FileType2 className="h-6 w-6 text-primary flex-shrink-0" />
-      <div className="flex-1 truncate">
+      <div className="flex-shrink-0 bg-primary/10 text-primary p-2 rounded-md">
+        <FileType2 className="h-6 w-6" />
+      </div>
+      <div className="flex-1 truncate min-w-0">
         <p className="truncate text-sm font-medium text-foreground">
           {fileItem.file.name}
         </p>
@@ -65,11 +67,11 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 rounded-full"
+        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-9 w-9 rounded-full flex-shrink-0"
         onClick={() => onDelete(fileItem.id)}
         aria-label="Delete file"
       >
-        <Trash2 size={16} />
+        <Trash2 size={18} />
       </Button>
     </motion.li>
   );
