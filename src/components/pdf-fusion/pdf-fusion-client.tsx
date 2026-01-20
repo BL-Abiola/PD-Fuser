@@ -108,10 +108,10 @@ export function PdfFusionClient() {
           >
              <div className="px-4 md:px-6">
               <h2 className="text-lg font-semibold text-foreground">Your Files</h2>
-              <p className="text-sm text-muted-foreground">Drag and drop to reorder your PDFs before merging.</p>
+              <p className="text-sm text-muted-foreground">Drag to reorder. After merging, you can swipe right to delete.</p>
             </div>
-            <ScrollArea className="w-full max-h-[45vh] px-2 md:px-4">
-              <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} />
+            <ScrollArea className="w-full max-h-[50vh]">
+              <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} isMergeDone={!!mergedPdfUrl} />
             </ScrollArea>
           </motion.div>
         )}

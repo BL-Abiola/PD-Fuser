@@ -21,9 +21,10 @@ type FileQueueProps = {
   files: FileItemType[];
   onReorder: (files: FileItemType[]) => void;
   onDelete: (id: string) => void;
+  isMergeDone: boolean;
 };
 
-export function FileQueue({ files, onReorder, onDelete }: FileQueueProps) {
+export function FileQueue({ files, onReorder, onDelete, isMergeDone }: FileQueueProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -49,13 +50,14 @@ export function FileQueue({ files, onReorder, onDelete }: FileQueueProps) {
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={files.map((f) => f.id)} strategy={verticalListSortingStrategy}>
-        <ul className="space-y-3 p-1">
+        <ul className="space-y-3 p-4">
           <AnimatePresence>
             {files.map((fileItem) => (
               <FileItem
                 key={fileItem.id}
                 fileItem={fileItem}
                 onDelete={onDelete}
+                isMergeDone={isMergeDone}
               />
             ))}
           </AnimatePresence>
