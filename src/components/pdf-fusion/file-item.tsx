@@ -53,7 +53,7 @@ export function FileItem({ fileItem, onDelete, isMergeDone }: FileItemProps) {
       exit="exit"
       layout
       className={cn(
-        "flex items-center gap-4 bg-background/50 p-3 border rounded-lg transition-all hover:bg-accent hover:border-primary/50",
+        "flex items-center gap-4 bg-card p-3 border rounded-md shadow-sm transition-all hover:shadow-md hover:border-primary/50",
         isDragging && "bg-accent ring-2 ring-primary"
       )}
       drag={isMergeDone ? "x" : false}
@@ -61,10 +61,10 @@ export function FileItem({ fileItem, onDelete, isMergeDone }: FileItemProps) {
       dragElastic={{ right: 0.5, left: 0 }}
       onDragEnd={isMergeDone ? handleDragEnd : undefined}
     >
-      <button {...attributes} {...listeners} className="cursor-grab touch-none p-2 text-muted-foreground hover:text-foreground" disabled={isMergeDone}>
+      <button {...attributes} {...listeners} className="cursor-grab touch-none p-2 text-muted-foreground hover:text-foreground disabled:cursor-not-allowed" disabled={isMergeDone}>
         <GripVertical size={20} />
       </button>
-      <div className="flex-shrink-0 bg-primary/10 text-primary p-2 rounded-md">
+      <div className="flex-shrink-0 bg-secondary text-secondary-foreground p-2 rounded-md">
         <FileText className="h-6 w-6" />
       </div>
       <div className="flex-1 truncate min-w-0">

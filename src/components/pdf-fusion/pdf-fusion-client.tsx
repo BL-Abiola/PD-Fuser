@@ -88,9 +88,9 @@ export function PdfFusionClient() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative w-full mx-auto rounded-2xl border bg-card/60 dark:bg-card/40 text-card-foreground shadow-2xl backdrop-blur-lg overflow-hidden"
+      className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden"
     >
-      <div className="p-4 md:p-6 space-y-4">
+      <div className="p-6 space-y-6">
         <FileDropzone onDrop={handleDrop} />
       </div>
       
@@ -102,11 +102,11 @@ export function PdfFusionClient() {
             exit={{ opacity: 0, height: 0 }}
             className="space-y-4"
           >
-             <div className="px-4 md:px-6">
+             <div className="px-6">
               <h2 className="text-lg font-semibold text-foreground">Your Files</h2>
               <p className="text-sm text-muted-foreground">Drag to reorder. After merging, swipe right to delete.</p>
             </div>
-            <ScrollArea className="w-full max-h-[40vh] sm:max-h-[50vh]">
+            <ScrollArea className="w-full max-h-[50vh]">
               <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} isMergeDone={!!mergedPdfUrl} />
             </ScrollArea>
           </motion.div>
@@ -123,14 +123,14 @@ export function PdfFusionClient() {
             >
               <div className="w-full space-y-2">
                 <p className="text-sm text-center text-muted-foreground">Merging... {Math.round(progress)}%</p>
-                <Progress value={progress} className="w-full h-2 bg-secondary" />
+                <Progress value={progress} className="w-full h-2" />
               </div>
             </motion.div>
           )}
       </AnimatePresence>
 
       {(files.length > 0) && (
-        <div className="p-4 bg-background/50 flex justify-center border-t">
+        <div className="p-6 bg-muted/50 flex justify-center border-t">
           <AnimatePresence mode="wait">
             {mergedPdfUrl ? (
               <motion.a

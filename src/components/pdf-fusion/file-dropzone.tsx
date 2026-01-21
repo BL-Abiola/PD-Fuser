@@ -20,16 +20,16 @@ export function FileDropzone({ onDrop }: FileDropzoneProps) {
     <div
       {...getRootProps()}
       className={cn(
-        "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-primary/40 bg-primary/10 p-12 text-center transition-colors duration-300 hover:border-primary hover:bg-primary/20",
-        isDragActive && "border-primary bg-primary/20"
+        "relative flex w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-secondary/50 p-12 text-center transition-colors duration-300 hover:border-primary hover:bg-accent",
+        isDragActive && "border-primary bg-accent"
       )}
     >
       <input {...getInputProps()} />
-      <div className="flex flex-col items-center gap-3 text-primary">
+      <div className="flex flex-col items-center gap-3 text-foreground">
         <UploadCloud
           className={cn(
-            "h-10 w-10 transition-transform duration-300",
-            isDragActive && "scale-110"
+            "h-10 w-10 text-muted-foreground transition-transform duration-300",
+            isDragActive && "scale-110 text-primary"
           )}
         />
         <p className="text-lg font-medium text-foreground">
