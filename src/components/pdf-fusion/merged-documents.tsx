@@ -15,7 +15,7 @@ type MergedDocumentsProps = {
 export function MergedDocuments({ documents, onDelete }: MergedDocumentsProps) {
   if (documents.length === 0) {
     return (
-      <div className="w-full h-[70vh] rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col items-center justify-center text-center p-8">
+      <div className="w-full min-h-[200px] rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col items-center justify-center text-center p-8">
         <Library className="h-16 w-16 text-muted-foreground/50 mb-4" />
         <h3 className="text-xl font-semibold text-foreground">Your Library is Empty</h3>
         <p className="text-muted-foreground mt-2 max-w-xs">
@@ -26,14 +26,14 @@ export function MergedDocuments({ documents, onDelete }: MergedDocumentsProps) {
   }
 
   return (
-    <div className="w-full rounded-xl border bg-card text-card-foreground shadow-lg h-[70vh] flex flex-col">
+    <div className="w-full rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col">
       <div className="p-4 px-6 border-b">
         <h2 className="text-lg font-semibold text-foreground">Your Merged Documents</h2>
         <p className="text-sm text-muted-foreground mt-1">
           Download or delete your previously merged files from this session.
         </p>
       </div>
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1" style={{ maxHeight: "65vh" }}>
         <ul className="p-6 space-y-4">
           <AnimatePresence>
             {documents.map((doc) => (
