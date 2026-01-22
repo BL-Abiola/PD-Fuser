@@ -47,7 +47,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       )}
     >
       <div className={cn(
-        "flex items-center w-full bg-card p-3 border rounded-xl transition-all duration-200",
+        "flex items-center w-full bg-card p-2 md:p-3 border rounded-xl transition-all duration-200",
         "hover:border-primary/40 hover:shadow-sm",
         isDragging ? "shadow-xl bg-accent border-primary" : "shadow-sm",
       )}>
@@ -60,7 +60,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
           <GripVertical size={20} />
         </button>
 
-        <div className="flex-shrink-0 mx-4">
+        <div className="flex-shrink-0 mx-2">
           <FileText className="h-6 w-6 text-primary" />
         </div>
         
@@ -76,7 +76,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
         <Button
           variant="ghost"
           size="sm"
-          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-9 w-9 rounded-full flex-shrink-0 ml-4"
+          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-9 w-9 rounded-full flex-shrink-0 ml-2"
           onClick={() => onDelete(fileItem.id)}
           aria-label="Delete file"
         >
