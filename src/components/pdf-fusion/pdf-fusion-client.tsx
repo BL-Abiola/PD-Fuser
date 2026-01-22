@@ -105,57 +105,58 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
   };
 
   return (
-    <div className="space-y-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden flex flex-col"
-      >
-        <div className="p-6">
-          <FileDropzone onDrop={handleDrop} hasFiles={files.length > 0} />
-        </div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden flex flex-col"
+    >
+      <div className="p-6">
+        <FileDropzone onDrop={handleDrop} hasFiles={files.length > 0} />
+      </div>
 
-        <AnimatePresence>
-          {files.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
-              className="flex-1 flex flex-col min-h-0 border-t"
-            >
-              <div className="p-4 px-6 border-b bg-card flex justify-between items-center">
-                <div>
-                  <h2 className="text-lg font-semibold text-foreground">
-                    Your Files
-                  </h2>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Drag to reorder.
-                  </p>
-                </div>
-                <Button variant="outline" size="sm" onClick={handleClearAll}>
-                  <X className="h-4 w-4 mr-2" />
-                  Clear All
-                </Button>
+      <AnimatePresence>
+        {files.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="flex-1 flex flex-col min-h-0 border-t"
+          >
+            <div className="p-4 px-6 border-b bg-card flex justify-between items-center">
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">
+                  Your Files
+                </h2>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Drag to reorder.
+                </p>
               </div>
-              <ScrollArea className="w-full flex-1 max-h-[calc(80vh-320px)] lg:max-h-[45vh]">
-                <FileQueue
-                  files={files}
-                  onReorder={handleReorder}
-                  onDelete={handleDelete}
-                />
-              </ScrollArea>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        <AnimatePresence>
-          {isMerging && (
+              <Button variant="outline" size="sm" onClick={handleClearAll}>
+                <X className="h-4 w-4 mr-2" />
+                Clear All
+              </Button>
+            </div>
+            <ScrollArea className="w-full flex-1 max-h-[calc(80vh-320px)] lg:max-h-[45vh]">
+              <FileQueue
+                files={files}
+                onReorder={handleReorder}
+                onDelete={handleDelete}
+              />
+            </ScrollArea>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      <div className="border-t">
+        <AnimatePresence mode="wait">
+          {isMerging ? (
             <motion.div
+              key="progress"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="px-6 pb-6 pt-2"
+              className="p-6"
             >
               <div className="w-full space-y-2">
                 <p className="text-sm text-center text-muted-foreground">
@@ -164,42 +165,30 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                 <Progress value={progress} className="w-full h-2" />
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
-      </motion.div>
-
-      <AnimatePresence>
-        {files.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-          >
-            <div className="p-6 bg-card border rounded-xl shadow-lg">
+          ) : files.length > 0 ? (
+            <motion.div
+              key="button"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="p-6 bg-muted/50"
+            >
               <div className="flex justify-center">
                 <Button
                   size="lg"
                   onClick={handleMerge}
-                  disabled={isMerging}
                   className="shadow-lg w-full"
                 >
-                  {isMerging ? (
-                    <Loader2 className="animate-spin" size={20} />
-                  ) : (
-                    <Files size={20} />
-                  )}
+                  <Files size={20} />
                   <span className="ml-2">
-                    {isMerging
-                      ? "Merging..."
-                      : `Merge ${files.length} Files`}
+                    {`Merge ${files.length} Files`}
                   </span>
                 </Button>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
+            </motion.div>
+          ) : null}
+        </AnimatePresence>
+      </div>
+    </motion.div>
   );
 }
