@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { GripVertical, Trash2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
-import { FileItemType } from "./pdf-fusion-client";
+import type { FileItemType } from "./types";
 import { cn } from "@/lib/utils";
 
 type FileItemProps = {

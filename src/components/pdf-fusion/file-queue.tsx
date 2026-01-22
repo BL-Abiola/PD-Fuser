@@ -15,17 +15,15 @@ import {
 } from "@dnd-kit/sortable";
 import { AnimatePresence } from "framer-motion";
 import { FileItem } from "./file-item";
-import { FileItemSwipe } from "./file-item-swipe";
-import { FileItemType } from "./pdf-fusion-client";
+import type { FileItemType } from "./types";
 
 type FileQueueProps = {
   files: FileItemType[];
   onReorder: (files: FileItemType[]) => void;
   onDelete: (id: string) => void;
-  isMergeDone: boolean;
 };
 
-export function FileQueue({ files, onReorder, onDelete, isMergeDone }: FileQueueProps) {
+export function FileQueue({ files, onReorder, onDelete }: FileQueueProps) {
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -42,22 +40,6 @@ export function FileQueue({ files, onReorder, onDelete, isMergeDone }: FileQueue
       const newIndex = files.findIndex((item) => item.id === over.id);
       onReorder(arrayMove(files, oldIndex, newIndex));
     }
-  }
-
-  if (isMergeDone) {
-    return (
-      <ul className="space-y-4 px-6 py-4">
-        <AnimatePresence>
-          {files.map((fileItem) => (
-            <FileItemSwipe
-              key={fileItem.id}
-              fileItem={fileItem}
-              onDelete={onDelete}
-            />
-          ))}
-        </AnimatePresence>
-      </ul>
-    )
   }
 
   return (

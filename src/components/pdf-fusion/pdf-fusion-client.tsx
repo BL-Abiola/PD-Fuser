@@ -5,29 +5,28 @@ import { PDFDocument } from "pdf-lib";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileDropzone } from "./file-dropzone";
 import { FileQueue } from "./file-queue";
-import { Button, buttonVariants } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Download, Loader2, Files } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Loader2, Files } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import type { FileItemType } from "./types";
 
-export type FileItemType = {
-  id: string;
-  file: File;
+type PdfFusionClientProps = {
+  onMergeComplete: (mergedFile: { name: string; url: string }) => void;
 };
 
 let fileCounter = 0;
 
-export function PdfFusionClient() {
+export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
   const [files, setFiles] = useState<FileItemType[]>([]);
   const [isMerging, setIsMerging] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [mergedPdfUrl, setMergedPdfUrl] = useState<string | null>(null);
+  const [outputFilename, setOutputFilename] = useState("merged.pdf");
   const { toast } = useToast();
 
   const handleDrop = useCallback((acceptedFiles: File[]) => {
-    setMergedPdfUrl(null);
     const newFiles = acceptedFiles.map((file) => ({
       id: `file-${fileCounter++}`,
       file,
@@ -43,18 +42,32 @@ export function PdfFusionClient() {
     setFiles(reorderedFiles);
   }, []);
 
+  const reset = () => {
+    setFiles([]);
+    setIsMerging(false);
+    setProgress(0);
+  };
+
   const handleMerge = async () => {
-    if (files.length < 2) {
+    if (files.length < 1) {
       toast({
         variant: "destructive",
-        title: "Not enough files",
-        description: "Please upload at least two PDF files to merge.",
+        title: "No files",
+        description: "Please upload at least one PDF file.",
       });
       return;
     }
+    if (!outputFilename.trim() || !outputFilename.toLowerCase().endsWith('.pdf')) {
+        toast({
+            variant: 'destructive',
+            title: 'Invalid filename',
+            description: 'Filename must not be empty and must end with .pdf',
+        });
+        return;
+    }
+
     setIsMerging(true);
     setProgress(0);
-    setMergedPdfUrl(null);
 
     try {
       const mergedPdf = await PDFDocument.create();
@@ -70,7 +83,16 @@ export function PdfFusionClient() {
       const mergedPdfBytes = await mergedPdf.save({ useObjectStreams: true });
       const blob = new Blob([mergedPdfBytes], { type: "application/pdf" });
       const url = URL.createObjectURL(blob);
-      setMergedPdfUrl(url);
+
+      onMergeComplete({ name: outputFilename, url });
+
+      toast({
+        title: "Merge successful!",
+        description: `${outputFilename} has been added to your library.`,
+      });
+
+      reset();
+
     } catch (e) {
       console.error(e);
       toast({
@@ -79,7 +101,7 @@ export function PdfFusionClient() {
         description: "Could not merge the PDFs. Please ensure they are valid files.",
       });
     } finally {
-      setIsMerging(false);
+        setIsMerging(false);
     }
   };
   
@@ -104,10 +126,10 @@ export function PdfFusionClient() {
           >
              <div className="p-4 px-6 border-b bg-card">
               <h2 className="text-lg font-semibold text-foreground">Your Files</h2>
-              <p className="text-sm text-muted-foreground mt-1">Drag to reorder. After merging, swipe left to delete.</p>
+              <p className="text-sm text-muted-foreground mt-1">Drag to reorder.</p>
             </div>
             <ScrollArea className="w-full flex-1">
-              <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} isMergeDone={!!mergedPdfUrl} />
+              <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} />
             </ScrollArea>
           </motion.div>
         )}
@@ -130,46 +152,34 @@ export function PdfFusionClient() {
       </AnimatePresence>
 
       {(files.length > 0) && (
-        <div className="p-6 bg-muted/50 flex justify-center border-t">
-          <AnimatePresence mode="wait">
-            {mergedPdfUrl ? (
-              <motion.a
-                key="download"
-                href={mergedPdfUrl}
-                download="merged.pdf"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-                className={cn(buttonVariants({ size: 'lg', variant: 'success' }), "gap-2 shadow-lg")}
-              >
-                <Download size={20} />
-                <span>Download Merged PDF</span>
-              </motion.a>
-            ) : (
-              <motion.div
-                key="merge"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.8 }}
-              >
+        <div className="p-6 bg-muted/50 border-t space-y-4">
+            <div className="space-y-2">
+                <label htmlFor="output-filename" className="text-sm font-medium text-foreground">Output Filename</label>
+                <Input 
+                    id="output-filename"
+                    value={outputFilename}
+                    onChange={(e) => setOutputFilename(e.target.value)}
+                    placeholder="e.g., merged-document.pdf"
+                    disabled={isMerging}
+                />
+            </div>
+            <div className="flex justify-center">
                 <Button
-                  size="lg"
-                  onClick={handleMerge}
-                  disabled={isMerging}
-                  className="shadow-lg"
+                    size="lg"
+                    onClick={handleMerge}
+                    disabled={isMerging}
+                    className="shadow-lg w-full"
                 >
-                  {isMerging ? (
+                    {isMerging ? (
                     <Loader2 className="animate-spin" size={20} />
-                  ) : (
+                    ) : (
                     <Files size={20} />
-                  )}
-                  <span className="ml-2">
+                    )}
+                    <span className="ml-2">
                     {isMerging ? "Merging..." : `Merge ${files.length} Files`}
-                  </span>
+                    </span>
                 </Button>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            </div>
         </div>
       )}
     </motion.div>
