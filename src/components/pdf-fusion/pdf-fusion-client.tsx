@@ -124,7 +124,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
             transition={{ duration: 0.2 }}
             className="flex-1 flex flex-col min-h-0 border-t"
           >
-            <div className="p-6 border-b bg-card flex justify-between items-center">
+            <div className="p-4 px-6 border-b bg-card flex justify-between items-center">
               <div>
                 <h2 className="text-lg font-semibold text-foreground">
                   Your Files
@@ -149,29 +149,38 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
         )}
       </AnimatePresence>
       
-      <div className="border-t p-6">
+      <div className="border-t border-dashed p-6 text-center">
         <AnimatePresence mode="wait">
           {isMerging ? (
             <motion.div
               key="progress"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: "auto" }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              <div className="w-full space-y-2">
-                <p className="text-sm text-center text-muted-foreground">
-                  Merging... {Math.round(progress)}%
+              <div className="w-full space-y-3">
+                <p className="text-sm font-medium text-muted-foreground animate-pulse">
+                  Merging your documents...
                 </p>
                 <Progress value={progress} className="w-full h-2" />
+                <p className="text-xs text-muted-foreground">
+                  {Math.round(progress)}% complete
+                </p>
               </div>
             </motion.div>
           ) : files.length > 0 ? (
             <motion.div
               key="button"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-3"
             >
+              <h3 className="text-md font-medium text-foreground">
+                Ready to go?
+              </h3>
               <div className="flex justify-center">
                 <Button
                   size="lg"
@@ -180,12 +189,27 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                 >
                   <Files size={20} />
                   <span className="ml-2">
-                    {`Merge ${files.length} Files`}
+                    {`Merge ${files.length} File${
+                      files.length > 1 ? "s" : ""
+                    }`}
                   </span>
                 </Button>
               </div>
             </motion.div>
-          ) : null}
+          ) : (
+            <motion.div
+              key="placeholder"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="py-8"
+            >
+              <p className="text-sm text-muted-foreground">
+                Add files above to get started.
+              </p>
+            </motion.div>
+          )}
         </AnimatePresence>
       </div>
     </motion.div>
