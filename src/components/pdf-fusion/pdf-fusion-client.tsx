@@ -124,7 +124,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
             transition={{ duration: 0.2 }}
             className="flex-1 flex flex-col min-h-0 border-t"
           >
-            <div className="p-4 px-6 border-b bg-card flex justify-between items-center">
+            <div className="p-6 border-b bg-card flex justify-between items-center">
               <div>
                 <h2 className="text-lg font-semibold text-foreground">
                   Your Files
@@ -149,7 +149,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
         )}
       </AnimatePresence>
       
-      <div className="border-t">
+      <div className="border-t p-6">
         <AnimatePresence mode="wait">
           {isMerging ? (
             <motion.div
@@ -157,7 +157,6 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="p-6"
             >
               <div className="w-full space-y-2">
                 <p className="text-sm text-center text-muted-foreground">
@@ -172,13 +171,12 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="p-6"
             >
               <div className="flex justify-center">
                 <Button
                   size="lg"
                   onClick={handleMerge}
-                  className="shadow-lg w-full"
+                  className="shadow-lg w-full max-w-xs"
                 >
                   <Files size={20} />
                   <span className="ml-2">
