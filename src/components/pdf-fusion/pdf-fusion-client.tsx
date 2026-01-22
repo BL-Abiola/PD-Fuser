@@ -88,7 +88,7 @@ export function PdfFusionClient() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden flex flex-col max-h-[85vh]"
+      className="relative w-full mx-auto rounded-xl border bg-card text-card-foreground shadow-lg overflow-hidden flex flex-col max-h-[80vh]"
     >
       <div className="p-6">
         <FileDropzone onDrop={handleDrop} />
@@ -102,9 +102,9 @@ export function PdfFusionClient() {
             exit={{ opacity: 0, height: 0 }}
             className="flex-1 flex flex-col min-h-0 border-t"
           >
-             <div className="p-4 px-6 border-b bg-muted/30">
-              <h2 className="text-base font-semibold text-foreground">Your Files</h2>
-              <p className="text-xs text-muted-foreground">Drag to reorder. After merging, swipe left to delete.</p>
+             <div className="p-4 px-6 border-b bg-card">
+              <h2 className="text-lg font-semibold text-foreground">Your Files</h2>
+              <p className="text-sm text-muted-foreground mt-1">Drag to reorder. After merging, swipe left to delete.</p>
             </div>
             <ScrollArea className="w-full flex-1">
               <FileQueue files={files} onReorder={handleReorder} onDelete={handleDelete} isMergeDone={!!mergedPdfUrl} />

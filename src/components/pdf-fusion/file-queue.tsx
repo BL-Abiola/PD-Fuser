@@ -15,6 +15,7 @@ import {
 } from "@dnd-kit/sortable";
 import { AnimatePresence } from "framer-motion";
 import { FileItem } from "./file-item";
+import { FileItemSwipe } from "./file-item-swipe";
 import { FileItemType } from "./pdf-fusion-client";
 
 type FileQueueProps = {
@@ -43,6 +44,22 @@ export function FileQueue({ files, onReorder, onDelete, isMergeDone }: FileQueue
     }
   }
 
+  if (isMergeDone) {
+    return (
+      <ul className="space-y-4 px-6 py-4">
+        <AnimatePresence>
+          {files.map((fileItem) => (
+            <FileItemSwipe
+              key={fileItem.id}
+              fileItem={fileItem}
+              onDelete={onDelete}
+            />
+          ))}
+        </AnimatePresence>
+      </ul>
+    )
+  }
+
   return (
     <DndContext
       sensors={sensors}
@@ -50,14 +67,13 @@ export function FileQueue({ files, onReorder, onDelete, isMergeDone }: FileQueue
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={files.map((f) => f.id)} strategy={verticalListSortingStrategy}>
-        <ul className="space-y-3 px-6 pb-6">
+        <ul className="space-y-4 px-6 py-4">
           <AnimatePresence>
             {files.map((fileItem) => (
               <FileItem
                 key={fileItem.id}
                 fileItem={fileItem}
                 onDelete={onDelete}
-                isMergeDone={isMergeDone}
               />
             ))}
           </AnimatePresence>

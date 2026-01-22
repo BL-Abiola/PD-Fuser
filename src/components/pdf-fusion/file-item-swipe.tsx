@@ -1,34 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Trash2, FileText } from "lucide-react";
+import { Trash2, FileText, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import { FileItemType } from "./pdf-fusion-client";
 import { cn } from "@/lib/utils";
 
-type FileItemProps = {
+type FileItemSwipeProps = {
   fileItem: FileItemType;
   onDelete: (id: string) => void;
 };
 
-export function FileItem({ fileItem, onDelete }: FileItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({ id: fileItem.id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-    zIndex: isDragging ? 10 : "auto",
-  };
+export function FileItemSwipe({ fileItem, onDelete }: FileItemSwipeProps) {
 
   const variants = {
     hidden: { opacity: 0, y: -10 },
@@ -36,29 +20,27 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
     exit: { opacity: 0, x: -100, transition: { duration: 0.2 } },
   };
 
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: { offset: { x: number; y: number; }; }) => {
+    if (info.offset.x < -60) { // Swiping left
+      onDelete(fileItem.id);
+    }
+  };
+
   return (
     <motion.li
-      ref={setNodeRef}
-      style={style}
       variants={variants}
       layout
-      className={cn(
-        isDragging && "opacity-60"
-      )}
+      className="relative group/item"
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={{ left: 0.5, right: 0 }}
+      onDragEnd={handleDragEnd}
     >
       <div className={cn(
-        "flex items-center w-full bg-card p-3 border rounded-xl transition-all duration-200",
-        "hover:border-primary/40 hover:shadow-sm",
-        isDragging ? "shadow-xl bg-accent border-primary" : "shadow-sm",
+        "flex items-center w-full bg-card p-3 border rounded-xl transition-all duration-200 shadow-sm",
+        "hover:border-primary/40 hover:shadow-sm"
       )}>
-        <button
-          {...attributes}
-          {...listeners}
-          className="cursor-grab touch-none p-2 -m-2 text-muted-foreground hover:text-foreground"
-          aria-label="Drag to reorder"
-        >
-          <GripVertical size={20} />
-        </button>
+        <div className="w-8"/>
 
         <div className="flex-shrink-0 mx-4">
           <FileText className="h-6 w-6 text-primary" />
@@ -82,6 +64,11 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
         >
           <Trash2 size={18} />
         </Button>
+      </div>
+      
+      <div className="absolute inset-y-0 left-0 flex items-center pl-4 text-destructive/80 pointer-events-none opacity-0 group-hover/item:opacity-100 transition-opacity duration-300">
+        <ChevronLeft className="h-4 w-4 mr-1" />
+        <span className="text-xs font-semibold">Swipe to delete</span>
       </div>
     </motion.li>
   );
