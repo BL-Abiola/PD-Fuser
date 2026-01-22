@@ -105,7 +105,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <motion.div
         layout
         initial={{ opacity: 0, y: 20 }}
@@ -125,7 +125,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
-            className="rounded-xl border bg-card text-card-foreground shadow-lg"
+            className="rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col"
           >
             <div className="p-4 px-6 border-b flex justify-between items-center">
               <div>
@@ -139,28 +139,14 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                 Clear All
               </Button>
             </div>
-            <ScrollArea style={{ maxHeight: "40vh" }}>
+            <ScrollArea className="flex-grow" style={{ maxHeight: "40vh" }}>
               <FileQueue
                 files={files}
                 onReorder={handleReorder}
                 onDelete={handleDelete}
               />
             </ScrollArea>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <AnimatePresence>
-        {files.length > 0 && (
-          <motion.div
-            layout
-            key="merge_card"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20, transition: { duration: 0.2 } }}
-            className="rounded-xl border bg-card text-card-foreground shadow-lg"
-          >
-            <div className="p-6 text-center">
+            <div className="border-t p-6 text-center">
               <AnimatePresence mode="wait">
                 {isMerging ? (
                   <motion.div
