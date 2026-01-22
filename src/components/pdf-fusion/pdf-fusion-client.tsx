@@ -118,9 +118,10 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
       <AnimatePresence>
         {files.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="flex-1 flex flex-col min-h-0 border-t"
           >
             <div className="p-4 px-6 border-b bg-card flex justify-between items-center">
