@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { GripVertical, Trash2, FileText } from "lucide-react";
+import { Trash2, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import type { FileItemType } from "./types";
@@ -43,34 +43,32 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       variants={variants}
       layout
       className={cn(
-        "flex w-full items-center gap-2 rounded-lg border bg-secondary/30 p-2 shadow-sm transition-shadow",
+        "flex w-full items-center rounded-lg border bg-secondary/30 p-2 shadow-sm transition-shadow",
         isDragging ? "bg-card shadow-lg" : ""
       )}
     >
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab touch-none p-2 text-muted-foreground hover:text-foreground flex-shrink-0"
+        className="flex flex-1 items-center gap-3 min-w-0 touch-none cursor-grab"
         aria-label="Drag to reorder"
       >
-        <GripVertical size={16} />
-      </div>
-
-      <FileText className="h-5 w-5 flex-shrink-0 text-primary/80" />
-      
-      <div className="flex-1 min-w-0">
-        <p className="truncate text-sm font-medium text-foreground">
-          {fileItem.file.name}
-        </p>
-        <p className="text-xs text-muted-foreground">
-          {formatBytes(fileItem.file.size)}
-        </p>
+        <FileText className="h-5 w-5 flex-shrink-0 text-primary/80" />
+        
+        <div className="flex-1 min-w-0">
+          <p className="truncate text-sm font-medium text-foreground">
+            {fileItem.file.name}
+          </p>
+          <p className="text-xs text-muted-foreground">
+            {formatBytes(fileItem.file.size)}
+          </p>
+        </div>
       </div>
 
       <Button
         variant="ghost"
         size="icon"
-        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 rounded-full flex-shrink-0"
+        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 rounded-full flex-shrink-0 ml-2"
         onClick={() => onDelete(fileItem.id)}
         aria-label="Delete file"
       >
