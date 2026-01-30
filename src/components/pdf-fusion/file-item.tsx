@@ -43,7 +43,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       variants={variants}
       layout
       className={cn(
-        "flex w-full items-center space-x-4 rounded-lg border bg-secondary/30 p-3 shadow-sm transition-shadow",
+        "flex w-full items-center gap-2 rounded-lg border bg-secondary/30 p-3 shadow-sm transition-shadow",
         isDragging ? "bg-card shadow-lg" : ""
       )}
     >
