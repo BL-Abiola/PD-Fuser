@@ -43,7 +43,7 @@ export function AboutDialog({ open, onOpenChange }: { open: boolean, onOpenChang
                         </a>
                     </Button>
                     <Button variant="outline" size="sm" asChild>
-                        <a href="mailto:support@example.com">
+                        <a href="mailto:abiolalabs29@gmail.com">
                             <Mail className="h-4 w-4 mr-2" />
                             Email
                         </a>
