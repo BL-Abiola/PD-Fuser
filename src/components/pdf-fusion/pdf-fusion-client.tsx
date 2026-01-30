@@ -55,7 +55,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
       toast({
         variant: "destructive",
         title: "No files",
-        description: "Please upload at least one PDF file.",
+        description: "Please upload at least one PDF or image file.",
       });
       return;
     }
@@ -70,13 +70,57 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
       for (let i = 0; i < files.length; i++) {
         const file = files[i].file;
         const arrayBuffer = await file.arrayBuffer();
-        const pdf = await PDFDocument.load(arrayBuffer);
-        const copiedPages = await mergedPdf.copyPages(
-          pdf,
-          pdf.getPageIndices()
-        );
-        copiedPages.forEach((page) => mergedPdf.addPage(page));
+
+        if (file.type === "application/pdf") {
+          const pdf = await PDFDocument.load(arrayBuffer);
+          const copiedPages = await mergedPdf.copyPages(
+            pdf,
+            pdf.getPageIndices()
+          );
+          copiedPages.forEach((page) => mergedPdf.addPage(page));
+        } else if (file.type.startsWith("image/")) {
+          let image;
+          if (file.type === "image/jpeg") {
+            image = await mergedPdf.embedJpg(arrayBuffer);
+          } else if (file.type === "image/png") {
+            image = await mergedPdf.embedPng(arrayBuffer);
+          } else {
+            toast({
+              variant: "destructive",
+              title: "Unsupported Image",
+              description: `Cannot merge '${file.name}'. Only JPG and PNG images are supported.`,
+            });
+            continue;
+          }
+
+          if (image) {
+            const page = mergedPdf.addPage();
+            const pageDims = page.getSize();
+            const imageDims = image;
+            
+            const scale = Math.min(pageDims.width / imageDims.width, pageDims.height / imageDims.height);
+            const scaledWidth = imageDims.width * scale;
+            const scaledHeight = imageDims.height * scale;
+
+            page.drawImage(image, {
+              x: page.getWidth() / 2 - scaledWidth / 2,
+              y: page.getHeight() / 2 - scaledHeight / 2,
+              width: scaledWidth,
+              height: scaledHeight,
+            });
+          }
+        }
         setProgress(((i + 1) / files.length) * 100);
+      }
+
+      if (mergedPdf.getPageCount() === 0) {
+        toast({
+            variant: "destructive",
+            title: "No compatible files",
+            description: "No compatible files were found to merge. Please use PDF, JPG, or PNG files.",
+        });
+        setIsMerging(false);
+        return;
       }
 
       const mergedPdfBytes = await mergedPdf.save({ useObjectStreams: true });
@@ -98,7 +142,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
         variant: "destructive",
         title: "An error occurred",
         description:
-          "Could not merge the PDFs. Please ensure they are valid files.",
+          "Could not merge the files. Please ensure they are valid and not corrupted.",
       });
     } finally {
       setIsMerging(false);
@@ -154,7 +198,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                     className="w-full space-y-3"
                   >
                     <p className="text-sm font-medium text-muted-foreground animate-pulse">
-                      Merging your documents...
+                      Processing your files...
                     </p>
                     <Progress value={progress} className="w-full h-2" />
                     <p className="text-xs text-muted-foreground">
@@ -181,7 +225,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                       >
                         <Files size={20} />
                         <span className="ml-2">
-                          {`Merge ${files.length} File${
+                          {`Merge ${files.length} Item${
                             files.length > 1 ? "s" : ""
                           }`}
                         </span>

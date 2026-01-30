@@ -48,10 +48,10 @@ export default function Home() {
         <div className="container mx-auto max-w-4xl py-10 px-4 sm:px-6 md:px-8">
           <div className="flex flex-col items-center text-center mb-12">
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
-              Seamless PDF Merging
+              Seamless PDF & Image Merging
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground sm:text-lg">
-              Drag, drop, and reorder your PDFs, then merge them into a single file. All processing is done securely on your device.
+              Drag, drop, and reorder your PDFs and images, then merge them into a single file. All processing is done securely on your device.
             </p>
           </div>
           <div className="space-y-8">

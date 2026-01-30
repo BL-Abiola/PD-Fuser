@@ -14,6 +14,8 @@ export function FileDropzone({ onDrop, hasFiles = false }: FileDropzoneProps) {
     onDrop,
     accept: {
       "application/pdf": [".pdf"],
+      "image/jpeg": [".jpeg", ".jpg"],
+      "image/png": [".png"],
     },
   });
 
@@ -42,12 +44,12 @@ export function FileDropzone({ onDrop, hasFiles = false }: FileDropzoneProps) {
         ) : (
           <p className="text-lg font-medium text-foreground">
             {isDragActive
-              ? "Drop the files here!"
-              : "Drag & drop PDFs here, or click to select"}
+              ? "Drop files here!"
+              : "Drag & drop PDFs or images here, or click to select"}
           </p>
         )}
         <p className="text-sm text-muted-foreground">
-          All processing is done on your device for privacy.
+          JPG, PNG, and PDF files are supported.
         </p>
       </div>
     </div>

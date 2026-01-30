@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash2, FileText } from "lucide-react";
+import { Trash2, FileText, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import type { FileItemType } from "./types";
@@ -36,6 +36,8 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
     exit: { opacity: 0, scale: 0.5, transition: { duration: 0.2 } },
   };
 
+  const isImage = fileItem.file.type.startsWith("image/");
+
   return (
     <motion.div
       ref={setNodeRef}
@@ -49,7 +51,11 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
         isDragging ? "z-10 scale-105 shadow-2xl bg-accent ring-2 ring-primary" : "hover:shadow-lg hover:-translate-y-1"
       )}
     >
-      <FileText className="h-1/3 w-1/3 text-primary/80 mb-2" />
+      {isImage ? (
+        <ImageIcon className="h-1/3 w-1/3 text-primary/80 mb-2" />
+      ) : (
+        <FileText className="h-1/3 w-1/3 text-primary/80 mb-2" />
+      )}
 
       <div className="flex-1 min-w-0 w-full flex flex-col items-center justify-center">
         <p className="w-full truncate text-sm font-medium text-foreground px-1">
