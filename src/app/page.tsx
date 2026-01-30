@@ -32,8 +32,8 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-secondary/50 dark:bg-background">
-      <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur-sm">
+    <div className="flex flex-col min-h-screen bg-background">
+      <header className="sticky top-0 z-40 w-full border-b bg-background/80 backdrop-blur-sm">
         <div className="container mx-auto flex h-16 items-center px-4 sm:px-6 md:px-8">
           <a href="/" className="flex items-center space-x-2">
             <Files className="h-6 w-6 text-primary" />
@@ -45,8 +45,8 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1 w-full">
-        <div className="container mx-auto py-10 px-4 sm:px-6 md:px-8">
-          <div className="flex flex-col items-center text-center mb-10">
+        <div className="container mx-auto max-w-4xl py-10 px-4 sm:px-6 md:px-8">
+          <div className="flex flex-col items-center text-center mb-12">
             <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
               Seamless PDF Merging
             </h1>
@@ -54,16 +54,12 @@ export default function Home() {
               Drag, drop, and reorder your PDFs, then merge them into a single file. All processing is done securely on your device.
             </p>
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-            <div className="w-full h-full">
-              <PdfFusionClient onMergeComplete={handleMergeComplete} />
-            </div>
-            <div className="w-full">
-              <MergedDocuments
-                documents={mergedDocuments}
-                onDelete={handleDeleteMerged}
-              />
-            </div>
+          <div className="space-y-8">
+            <PdfFusionClient onMergeComplete={handleMergeComplete} />
+            <MergedDocuments
+              documents={mergedDocuments}
+              onDelete={handleDeleteMerged}
+            />
           </div>
         </div>
       </main>

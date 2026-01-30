@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash2, FileText } from "lucide-react";
+import { Trash2, FileText, GripVertical } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import type { FileItemType } from "./types";
@@ -43,17 +43,18 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       variants={variants}
       layout
       className={cn(
-        "flex w-full items-center gap-2 rounded-lg border bg-secondary/30 p-3 shadow-sm transition-shadow",
-        isDragging ? "bg-card shadow-lg" : ""
+        "flex w-full items-center gap-2 rounded-lg border bg-card/80 p-3 shadow-sm transition-shadow",
+        isDragging ? "bg-card shadow-lg scale-105" : ""
       )}
     >
       <div
         {...attributes}
         {...listeners}
-        className="flex flex-1 items-center gap-3 min-w-0 touch-none cursor-grab"
+        className="flex flex-1 items-center gap-3 min-w-0 touch-none"
         aria-label="Drag to reorder"
       >
-        <FileText className="h-5 w-5 flex-shrink-0 text-primary/80" />
+        <GripVertical className="h-5 w-5 flex-shrink-0 text-muted-foreground cursor-grab" />
+        <FileText className="h-6 w-6 flex-shrink-0 text-primary" />
         
         <div className="flex-1 min-w-0">
           <p className="truncate text-sm font-medium text-foreground">

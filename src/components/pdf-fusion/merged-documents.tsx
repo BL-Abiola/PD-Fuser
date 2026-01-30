@@ -15,8 +15,8 @@ type MergedDocumentsProps = {
 export function MergedDocuments({ documents, onDelete }: MergedDocumentsProps) {
   if (documents.length === 0) {
     return (
-      <div className="w-full min-h-[200px] rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col items-center justify-center text-center p-8">
-        <Library className="h-16 w-16 text-muted-foreground/50 mb-4" />
+      <div className="w-full min-h-[200px] rounded-2xl border bg-card/60 text-card-foreground shadow-2xl backdrop-blur-lg flex flex-col items-center justify-center text-center p-8">
+        <Library className="h-16 w-16 text-muted-foreground/30 mb-4" />
         <h3 className="text-xl font-semibold text-foreground">Your Library is Empty</h3>
         <p className="text-muted-foreground mt-2 max-w-xs">
           After you merge some PDFs, they will appear here for you to download or manage.
@@ -26,15 +26,15 @@ export function MergedDocuments({ documents, onDelete }: MergedDocumentsProps) {
   }
 
   return (
-    <div className="w-full rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col">
+    <div className="w-full rounded-2xl border bg-card/60 text-card-foreground shadow-2xl backdrop-blur-lg flex flex-col">
       <div className="p-4 sm:px-6 border-b">
         <h2 className="text-lg font-semibold text-foreground">Your Merged Documents</h2>
         <p className="text-sm text-muted-foreground mt-1">
-          Download or delete your previously merged files from this session.
+          Download or delete your merged files from this session.
         </p>
       </div>
       <ScrollArea className="flex-1" style={{ maxHeight: "65vh" }}>
-        <ul className="p-4 sm:p-6 space-y-3">
+        <ul className="p-4 sm:p-6 space-y-4">
           <AnimatePresence>
             {documents.map((doc) => (
               <MergedDocumentItem key={doc.id} document={doc} onDelete={onDelete} />
@@ -60,7 +60,7 @@ function MergedDocumentItem({ document, onDelete }: { document: MergedDocument, 
             animate="visible"
             exit="exit"
             layout
-            className="flex items-center w-full bg-secondary/30 p-3 sm:p-4 border rounded-xl shadow-sm"
+            className="flex items-center w-full bg-card/80 p-3 sm:p-4 border rounded-xl shadow-sm"
         >
             <div className="flex-1 truncate min-w-0 pr-2">
                 <p className="truncate font-medium text-foreground">{document.name}</p>
