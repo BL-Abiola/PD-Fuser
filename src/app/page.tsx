@@ -51,7 +51,7 @@ export default function Home() {
               Seamless PDF & Image Merging
             </h1>
             <p className="mt-4 max-w-2xl mx-auto text-muted-foreground sm:text-lg">
-              Drag, drop, and reorder your PDFs and images, then merge them into a single file. All processing is done securely on your device.
+              Drag, drop, and merge PDFs and images. Securely processed on your device.
             </p>
           </div>
           <div className="space-y-8">
