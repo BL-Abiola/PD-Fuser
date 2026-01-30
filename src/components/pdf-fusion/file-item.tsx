@@ -43,7 +43,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       variants={variants}
       layout
       className={cn(
-        "flex w-full items-center rounded-lg border bg-secondary/30 p-2 shadow-sm transition-shadow",
+        "flex w-full items-center space-x-4 rounded-lg border bg-secondary/30 p-3 shadow-sm transition-shadow",
         isDragging ? "bg-card shadow-lg" : ""
       )}
     >
@@ -68,7 +68,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       <Button
         variant="ghost"
         size="icon"
-        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 rounded-full flex-shrink-0 ml-2"
+        className="text-muted-foreground hover:text-destructive hover:bg-destructive/10 h-8 w-8 rounded-full flex-shrink-0"
         onClick={() => onDelete(fileItem.id)}
         aria-label="Delete file"
       >
