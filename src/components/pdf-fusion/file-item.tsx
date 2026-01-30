@@ -43,24 +43,22 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       variants={variants}
       layout
       className={cn(
-        "flex w-full items-center space-x-2 rounded-lg border bg-secondary/30 p-2 shadow-sm transition-shadow",
+        "flex w-full items-center gap-2 rounded-lg border bg-secondary/30 p-2 shadow-sm transition-shadow",
         isDragging ? "bg-card shadow-lg" : ""
       )}
     >
       <div
         {...attributes}
         {...listeners}
-        className="cursor-grab touch-none p-2 text-muted-foreground hover:text-foreground"
+        className="cursor-grab touch-none p-2 text-muted-foreground hover:text-foreground flex-shrink-0"
         aria-label="Drag to reorder"
       >
         <GripVertical size={16} />
       </div>
 
-      <div className="flex-shrink-0">
-        <FileText className="h-5 w-5 text-primary/80" />
-      </div>
+      <FileText className="h-5 w-5 flex-shrink-0 text-primary/80" />
       
-      <div className="flex-1 truncate min-w-0">
+      <div className="flex-1 min-w-0">
         <p className="truncate text-sm font-medium text-foreground">
           {fileItem.file.name}
         </p>

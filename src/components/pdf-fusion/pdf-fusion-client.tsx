@@ -113,7 +113,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
       </div>
 
       <div className="flex flex-col flex-1 min-h-0">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {hasFiles ? (
             <motion.div
               key="files-present"
@@ -143,7 +143,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                   />
                 </div>
               </ScrollArea>
-              <div className="border-t p-4 sm:p-6 text-center">
+              <div className="border-t p-4 sm:p-6 text-center mt-auto">
                 <AnimatePresence mode="wait">
                   {isMerging ? (
                     <motion.div
