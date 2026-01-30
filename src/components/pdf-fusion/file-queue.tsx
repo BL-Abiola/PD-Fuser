@@ -49,7 +49,7 @@ export function FileQueue({ files, onReorder, onDelete }: FileQueueProps) {
       onDragEnd={handleDragEnd}
     >
       <SortableContext items={files.map((f) => f.id)} strategy={verticalListSortingStrategy}>
-        <ul className="divide-y divide-border/75">
+        <ul className="space-y-3">
           <AnimatePresence initial={false}>
             {files.map((fileItem) => (
               <FileItem

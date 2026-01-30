@@ -103,16 +103,18 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
       setIsMerging(false);
     }
   };
+  
+  const hasFiles = files.length > 0;
 
   return (
     <div className="w-full rounded-xl border bg-card text-card-foreground shadow-lg flex flex-col h-full">
-      <div className="p-6">
-        <FileDropzone onDrop={handleDrop} hasFiles={files.length > 0} />
+      <div className="p-6 border-b">
+        <FileDropzone onDrop={handleDrop} hasFiles={hasFiles} />
       </div>
 
       <div className="flex flex-col flex-1 min-h-0">
         <AnimatePresence mode="wait">
-          {files.length > 0 ? (
+          {hasFiles ? (
             <motion.div
               key="files-present"
               initial={{ opacity: 0 }}
@@ -133,11 +135,13 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                 </Button>
               </div>
               <ScrollArea className="flex-grow">
+                <div className="px-4 pb-4">
                   <FileQueue
                     files={files}
                     onReorder={handleReorder}
                     onDelete={handleDelete}
                   />
+                </div>
               </ScrollArea>
               <div className="border-t p-4 sm:p-6 text-center">
                 <AnimatePresence mode="wait">
@@ -189,22 +193,20 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
                 </AnimatePresence>
               </div>
             </motion.div>
-          ) : null }
+          ) : (
+            <motion.div
+                key="files-absent"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, transition: { delay: 0.1 } }}
+                exit={{ opacity: 0 }}
+                className="flex-1 flex flex-col items-center justify-center text-center p-8 text-muted-foreground"
+              >
+                  <p className="text-sm">
+                    Add files above to get started.
+                  </p>
+              </motion.div>
+          )}
         </AnimatePresence>
-        
-        {files.length === 0 && !isMerging && (
-          <motion.div
-              key="files-absent"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="flex-1 flex flex-col items-center justify-center text-center p-8 text-muted-foreground"
-            >
-                <p className="text-sm">
-                  Add files above to get started.
-                </p>
-            </motion.div>
-        )}
       </div>
     </div>
   );
