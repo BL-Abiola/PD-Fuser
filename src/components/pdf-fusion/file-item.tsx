@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import type { FileItemType } from "./types";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 type FileItemProps = {
   fileItem: FileItemType;
@@ -23,6 +24,16 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
     transition,
     isDragging,
   } = useSortable({ id: fileItem.id });
+
+  React.useEffect(() => {
+    // When the component unmounts, revoke the object URL to free up memory.
+    return () => {
+      if (fileItem.previewUrl) {
+        URL.revokeObjectURL(fileItem.previewUrl);
+      }
+    };
+  }, [fileItem.previewUrl]);
+
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -47,29 +58,40 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
       {...attributes}
       {...listeners}
       className={cn(
-        "relative group/item flex flex-col items-center justify-center rounded-2xl border bg-card p-3 text-center shadow-sm transition-all aspect-square cursor-grab",
+        "relative group/item flex flex-col items-center justify-end rounded-2xl border bg-card text-center shadow-sm transition-all aspect-square cursor-grab overflow-hidden",
         isDragging ? "z-10 scale-105 shadow-2xl bg-accent ring-2 ring-primary" : "hover:shadow-lg hover:-translate-y-1"
       )}
     >
-      {isImage ? (
-        <ImageIcon className="h-1/3 w-1/3 text-primary/80 mb-2" />
+      {isImage && fileItem.previewUrl ? (
+        <img
+          src={fileItem.previewUrl}
+          alt={fileItem.file.name}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       ) : (
-        <FileText className="h-1/3 w-1/3 text-primary/80 mb-2" />
+        <div className="flex items-center justify-center h-full">
+            {isImage ? (
+                <ImageIcon className="h-1/3 w-1/3 text-primary/80" />
+            ) : (
+                <FileText className="h-1/3 w-1/3 text-primary/80" />
+            )}
+        </div>
       )}
-
-      <div className="flex-1 min-w-0 w-full flex flex-col items-center justify-center">
-        <p className="w-full truncate text-sm font-medium text-foreground px-1">
+      
+      <div className="relative z-10 w-full bg-gradient-to-t from-black/70 via-black/40 to-transparent p-2 pt-8 text-white">
+        <p className="w-full truncate text-sm font-medium text-white">
           {fileItem.file.name}
         </p>
-        <p className="text-xs text-muted-foreground mt-1">
+        <p className="text-xs text-white/80 mt-0.5">
           {formatBytes(fileItem.file.size)}
         </p>
       </div>
 
+
       <Button
         variant="ghost"
         size="icon"
-        className="absolute top-1 right-1 h-7 w-7 rounded-full text-muted-foreground/70 opacity-0 group-hover/item:opacity-100 hover:bg-destructive/10 hover:text-destructive z-20 cursor-pointer"
+        className="absolute top-1.5 right-1.5 h-7 w-7 rounded-full text-white/90 bg-black/40 opacity-0 group-hover/item:opacity-100 hover:bg-destructive/80 hover:text-white z-20 cursor-pointer backdrop-blur-sm"
         onClick={(e) => {
           e.stopPropagation(); // Prevent drag from starting when clicking delete
           onDelete(fileItem.id);

@@ -28,6 +28,9 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
     const newFiles = acceptedFiles.map((file) => ({
       id: `file-${fileCounter++}`,
       file,
+      previewUrl: file.type.startsWith("image/")
+        ? URL.createObjectURL(file)
+        : undefined,
     }));
     setFiles((prevFiles) => [...prevFiles, ...newFiles]);
   }, []);
