@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Trash2, FileText, Image as ImageIcon } from "lucide-react";
+import { Trash2, FileText, Image as ImageIcon, Code } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatBytes } from "@/lib/utils";
 import type { FileItemType } from "./types";
@@ -37,6 +37,7 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
   };
 
   const isImage = fileItem.file.type.startsWith("image/");
+  const isHtml = fileItem.file.type === "text/html";
 
   return (
     <motion.div
@@ -61,6 +62,8 @@ export function FileItem({ fileItem, onDelete }: FileItemProps) {
         <div className="flex items-center justify-center h-full">
             {isImage ? (
                 <ImageIcon className="h-1/3 w-1/3 text-primary/80" />
+            ) : isHtml ? (
+                <Code className="h-1/3 w-1/3 text-primary/80" />
             ) : (
                 <FileText className="h-1/3 w-1/3 text-primary/80" />
             )}

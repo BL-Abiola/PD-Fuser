@@ -16,6 +16,7 @@ export function FileDropzone({ onDrop, hasFiles = false }: FileDropzoneProps) {
       "application/pdf": [".pdf"],
       "image/jpeg": [".jpeg", ".jpg"],
       "image/png": [".png"],
+      "text/html": [".html", ".htm"],
     },
   });
 
@@ -45,11 +46,11 @@ export function FileDropzone({ onDrop, hasFiles = false }: FileDropzoneProps) {
           <p className="text-lg font-medium text-foreground">
             {isDragActive
               ? "Drop files here!"
-              : "Drag & drop PDFs or images here, or click to select"}
+              : "Drag & drop PDFs, images, or HTML files here"}
           </p>
         )}
         <p className="text-sm text-muted-foreground">
-          JPG, PNG, and PDF files are supported.
+          PDF, JPG, PNG, and HTML files are supported.
         </p>
       </div>
     </div>

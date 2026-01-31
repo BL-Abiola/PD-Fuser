@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { PDFDocument } from "pdf-lib";
+import html2pdf from "html2pdf.js";
 import { AnimatePresence, motion } from "framer-motion";
 import { FileDropzone } from "./file-dropzone";
 import { FileQueue } from "./file-queue";
@@ -87,9 +88,9 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
       const mergedPdf = await PDFDocument.create();
       for (let i = 0; i < files.length; i++) {
         const file = files[i].file;
-        const arrayBuffer = await file.arrayBuffer();
-
+        
         if (file.type === "application/pdf") {
+          const arrayBuffer = await file.arrayBuffer();
           const pdf = await PDFDocument.load(arrayBuffer);
           const copiedPages = await mergedPdf.copyPages(
             pdf,
@@ -97,6 +98,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
           );
           copiedPages.forEach((page) => mergedPdf.addPage(page));
         } else if (file.type.startsWith("image/")) {
+          const arrayBuffer = await file.arrayBuffer();
           let image;
           if (file.type === "image/jpeg") {
             image = await mergedPdf.embedJpg(arrayBuffer);
@@ -127,6 +129,23 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
               height: scaledHeight,
             });
           }
+        } else if (file.type === "text/html") {
+          const htmlString = await file.text();
+          const pdfArrayBuffer = await html2pdf()
+            .from(htmlString, "string")
+            .set({
+              margin: 1,
+              filename: file.name.replace(/\.(html|htm)$/, ".pdf"),
+              image: { type: "jpeg", quality: 0.98 },
+              html2canvas: { scale: 2, useCORS: true },
+              jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+            })
+            .toPdf()
+            .output("arraybuffer");
+          
+          const pdf = await PDFDocument.load(pdfArrayBuffer);
+          const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+          copiedPages.forEach((page) => mergedPdf.addPage(page));
         }
         setProgress(((i + 1) / files.length) * 100);
       }
@@ -135,7 +154,7 @@ export function PdfFusionClient({ onMergeComplete }: PdfFusionClientProps) {
         toast({
             variant: "destructive",
             title: "No compatible files",
-            description: "No compatible files were found to merge. Please use PDF, JPG, or PNG files.",
+            description: "No compatible files were found to merge. Please use PDF, JPG, PNG, or HTML files.",
         });
         setIsMerging(false);
         return;
