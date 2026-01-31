@@ -15,7 +15,7 @@ export function AboutDialog({ open, onOpenChange }: { open: boolean, onOpenChang
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md rounded-2xl">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">About PDFusion</DialogTitle>
+          <DialogTitle className="text-2xl font-bold">About Merdee</DialogTitle>
           <DialogDescription>
             A simple PDF and image merger.
           </DialogDescription>

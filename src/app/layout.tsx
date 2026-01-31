@@ -10,7 +10,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'PDFusion',
+  title: 'Merdee',
   description: 'Drag, drop, and merge. Create your perfect PDF in seconds.',
 };
 
